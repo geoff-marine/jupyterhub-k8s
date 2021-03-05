@@ -1,0 +1,29 @@
+singleuser:
+  # Defines the default image
+  image:
+    name: jupyter/minimal-notebook
+    tag: 2343e33dec46
+  profileList:
+    - display_name: "Datascience environment"
+      description: "If you want the additional bells and whistles: Python, R, and Julia."
+      kubespawner_override:
+        image: jupyter/datascience-notebook:notebook-6.2.0
+
+  storage:
+    extraVolumes:
+      - name: jupyterhub-shared
+        persistentVolumeClaim:
+          namespace: jupyterhub
+          claimName: shareddata
+    extraVolumeMounts:
+      - name: jupyterhub-shared
+        mountPath: /home/jovyan/shared/
+
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - geoffirwin
+        - user1
+    JupyterHub:
+      authenticator_class: nativeauthenticator.NativeAuthenticator
